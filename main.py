@@ -53,6 +53,7 @@ def post_data():
 
 @app.route('/upload_image', methods=['POST'])
 def post_image():
+    user_id = request.headers.get["userID"]
     api_key = request.headers.get('APIKey')
     print(api_key)
     if not api_key == os.environ["APIKey"]:
@@ -77,7 +78,6 @@ def post_image():
     blob.make_public()
     
     return blob.public_url
-
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
@@ -115,11 +115,34 @@ def update_feed():
     #retrieve friends' feed
     friends_feed = []
     for friend in friends_list:
-        friends_feed.append(str(local_db[friend]["activities"].keys()))
-    
-    return friends_feed
+        # get activities of friend
+        friend_activities = list(local_db[friend]["activities"].keys())
+        print(friend_activities)
+        for activity in friend_activities:
+            if local_db[friend]["activities"][activity]["missed"]:
+                pass
+
+            else:
+                friends_feed.append({
+                    "ownerID":friend,
+                    "ownerFirstName":local_db[friend]["firstName"],
+                    "ownerLastName":local_db[friend]["lastName"],
+                    "imageURL":local_db[friend]["activities"][activity]["imageURL"],
+                    "activityID":activity,
+                    "activityType":local_db[friend]["activities"][activity]["type"],
+                })
+        # if activity missed, do not include in feed
+        
+
     # we now have each key (acitvity), next check firebase storage for each image
-    # if image exists, add to user's feed
+    print(friends_feed)
+
+    # return image url + activity data + return using the activityid
+
+    return friends_feed
+
+
+
 
 
 

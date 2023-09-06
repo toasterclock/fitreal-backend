@@ -23,7 +23,7 @@
 		"activities": {
 			"firebase1234activity1234": {
 				"id": "firebase1234activity1234",
-				"type": "<activityType>",
+				"type": "running",
 				"stravaID": "<stravaID>",
 				"caption": "<caption>",
 				"movingTime": "<movingTime>",
@@ -32,7 +32,8 @@
 				"distance": "<distance>",
 				"private": "<private>",
 				"pace": "<pace>",
-				"missed": false
+				"missed": false,
+				"imageURL": "https://firebasestorage.googleapis.com/v0/b/fitreal-41736.appspot.com/o/DSC05035.JPG?alt=media&token=e075024e-a53d-41d4-bfff-b578c7b5be8e"
 			},
 			"firebase1234activity1235": {
 				"missed": true
