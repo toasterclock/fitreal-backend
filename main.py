@@ -17,6 +17,7 @@ app = Flask(__name__)
 
 bucket = storage.bucket("fitreal-41736.appspot.com")
 
+
 def checkAPIKey(request):
     if "APIKey" not in request.json:
         return False
@@ -96,6 +97,9 @@ def create_user():
         ref.set(local_db)
         return "Done"
     
+@app.route('/update_user', methods=['POST'])
+def update_user():
+    pass
 
 
 
