@@ -50,6 +50,35 @@ def post_data():
         ref.set(local_db)
         return "Done"
 
+@app.route('/new_activity', methods=['POST'])
+def new_activity():
+    data = request.json
+
+    # find for user id and map the new activity to it
+    user_id = data["userID"]
+    activity_id = data["activityID"]
+    # add to local_db.json
+    with open('local_db.json') as json_file:
+        local_db = json.load(json_file)
+    
+    local_db[user_id] = {"activities":{
+        activity_id:{
+            "type":data["type"],
+            "imageURL":"",
+            "missed":False
+        }
+    }}
+        # add to firebase
+    ref.set(local_db)
+    return "Done"
+
+@app.route('/fetch_users', methods=['GET'])
+def fetch_users():
+    with open('local_db.json') as json_file:
+        local_db = json.load(json_file)
+    return local_db
+
+
 
 @app.route('/upload_image', methods=['POST'])
 def post_image():
@@ -127,8 +156,7 @@ def update_feed():
             else:
                 friends_feed.append({
                     "ownerID":friend,
-                    "ownerFirstName":local_db[friend]["firstName"],
-                    "ownerLastName":local_db[friend]["lastName"],
+                    "ownerName:":local_db[friend]["name"],
                     "imageURL":local_db[friend]["activities"][activity]["imageURL"],
                     "activityID":activity,
                     "activityType":local_db[friend]["activities"][activity]["type"],
@@ -142,6 +170,7 @@ def update_feed():
     # return image url + activity data + return using the activityid
 
     return friends_feed
+
 
 
 if __name__ == '__main__':
