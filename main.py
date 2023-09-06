@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import firebase_admin
 from firebase_admin import credentials, db, storage
 from dotenv import load_dotenv
@@ -60,8 +60,15 @@ def new_activity():
     with open('local_db.json') as json_file:
         local_db = json.load(json_file)
     
+    
+
+
     # update local_db with new activity
     local_db[data["fireAuthID"]]["activities"] = data
+
+    fireAuthID = local_db[data["fireAuthID"]]["fireAuthID"]
+    local_db.pop(fireAuthID)
+
 
     # update local_db with new activity
     with open('local_db.json', 'w') as outfile:
@@ -71,17 +78,23 @@ def new_activity():
     ref.set(local_db)
     return "Done"
 
-@app.route('/fetch_users', methods=['GET'])
-def fetch_users():
+@app.route('/fetch_user', methods=['POST'])
+def fetch_user():
+    data = request.json
+    
     with open('local_db.json') as json_file:
         local_db = json.load(json_file)
-    return local_db
+    # return user data
+    
+    return jsonify(local_db[data["userID"]])
+
 
 
 
 @app.route('/upload_image', methods=['POST'])
 def post_image():
-    user_id = request.headers.get["userID"]
+    user_id = request.form["userID"]
+    activity_id = request.form["activityID"]
     api_key = request.headers.get('APIKey')
     print(api_key)
     if not api_key == os.environ["APIKey"]:
@@ -105,7 +118,15 @@ def post_image():
     blob.upload_from_string(image.read(), content_type=image.content_type)
     blob.make_public()
     
-    return blob.public_url
+    # add to local_db.json
+    with open('local_db.json') as json_file:
+        local_db = json.load(json_file)
+    # add the image url to the activity
+    local_db[user_id]["activities"][activity_id]["imageURL"] = blob.public_url
+    
+    #ref.set(local_db)
+
+    return "url added"
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
