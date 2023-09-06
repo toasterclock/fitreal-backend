@@ -54,20 +54,19 @@ def post_data():
 def new_activity():
     data = request.json
 
-    # find for user id and map the new activity to it
-    user_id = data["userID"]
-    activity_id = data["activityID"]
+    print(data)
+
     # add to local_db.json
     with open('local_db.json') as json_file:
         local_db = json.load(json_file)
     
-    local_db[user_id] = {"activities":{
-        activity_id:{
-            "type":data["type"],
-            "imageURL":"",
-            "missed":False
-        }
-    }}
+    # update local_db with new activity
+    local_db[data["fireAuthID"]]["activities"] = data
+
+    # update local_db with new activity
+    with open('local_db.json', 'w') as outfile:
+        json.dump(local_db, outfile)
+    
         # add to firebase
     ref.set(local_db)
     return "Done"
