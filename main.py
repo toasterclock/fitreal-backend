@@ -19,9 +19,9 @@ bucket = storage.bucket("fitreal-41736.appspot.com")
 
 
 def checkAPIKey(request):
-    if "APIKey" not in request.json:
+    if "APIKey" not in request.headers:
         return False
-    if request.json["APIKey"] != os.environ["APIKey"]:
+    if request.headers["APIKey"] != os.environ["APIKey"]:
         return False
     
     return True
@@ -39,7 +39,7 @@ def post_data():
     if not checkAPIKey(request):
         return "Denied, Invalid API Key"
     else:
-        data.pop("APIKey")
+        # data.pop("APIKey")
         # add to local_db.json
         with open('local_db.json') as json_file:
             local_db = json.load(json_file)
@@ -86,7 +86,7 @@ def create_user():
     else:
     # Push the data to Firebase
         data = request.json
-        data.pop("APIKey")
+        # data.pop("APIKey")
         # add to local_db.json
         with open('local_db.json') as json_file:
             local_db = json.load(json_file)
