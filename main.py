@@ -83,13 +83,13 @@ def create_user():
     if not checkAPIKey(request):
         return "Denied, Invalid API Key"
     else:
-        request.pop("APIKey")
     # Push the data to Firebase
         data = request.json
+        data.pop("APIKey")
         # add to local_db.json
         with open('local_db.json') as json_file:
             local_db = json.load(json_file)
-        local_db["users"].append(data)
+        local_db.update(data)
         with open('local_db.json', 'w') as outfile:
             json.dump(local_db, outfile)
         # replace firebase db
