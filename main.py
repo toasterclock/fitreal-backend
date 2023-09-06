@@ -90,7 +90,9 @@ def create_user():
         # add to local_db.json
         with open('local_db.json') as json_file:
             local_db = json.load(json_file)
-        local_db.update(data)
+        
+        local_db[data["fireAuthID"]] = data
+
         with open('local_db.json', 'w') as outfile:
             json.dump(local_db, outfile)
         # replace firebase db
