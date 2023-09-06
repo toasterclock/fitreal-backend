@@ -101,6 +101,30 @@ def create_user():
 def update_user():
     pass
 
+@app.route('/update_feed', methods=['POST'])
+def update_feed():
+    #user requests to update feed with user id
+
+    user_id = request.json["user_id"]
+    
+    #update user feed with friends list
+    with open('local_db.json') as json_file:
+        local_db = json.load(json_file)
+    friends_list = local_db[user_id]["friends"]
+    
+    #retrieve friends' feed
+    friends_feed = []
+    for friend in friends_list:
+        friends_feed.append(str(local_db[friend]["activities"].keys()))
+    
+    return friends_feed
+    # we now have each key (acitvity), next check firebase storage for each image
+    # if image exists, add to user's feed
+
+
+
+
+    
 
 
 if __name__ == '__main__':
