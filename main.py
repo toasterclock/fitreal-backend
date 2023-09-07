@@ -194,6 +194,37 @@ def update_feed():
 
     return friends_feed
 
+# @app.route('/add_friend', methods=['POST'])
+# def add_friend():
+#     data = request.json
+#     # check api key in header
+#     if not checkAPIKey(request):
+#         return "Denied, Invalid API Key"
+#     else:
+#         # add to local_db.json
+#         with open('local_db.json') as json_file:
+#             local_db = json.load(json_file)
+#         local_db[data["userID"]]["friends"].append(data["friendID"])
+#         with open('local_db.json', 'w') as outfile:
+#             json.dump(local_db, outfile)
+#         # replace firebase db
+#         ref.set(local_db)
+#         return "Done"
+
+# @app.route('/pending_requests', methods=['POST'])
+# def pending_requests():
+#     data = request.json
+#     # check api key in header
+#     if not checkAPIKey(request):
+#         return "Denied, Invalid API Key"
+#     else:
+#         # add to local_db.json
+#         with open('local_db.json') as json_file:
+#             local_db = json.load(json_file)
+#         # return pending requests if there are any
+
+#         return local_db[data["userID"]]["friendRequests"]
+    
 
 
 if __name__ == '__main__':
