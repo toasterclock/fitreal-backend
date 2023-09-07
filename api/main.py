@@ -8,7 +8,7 @@ import copy
 
 
 
-cred = credentials.Certificate("../fitreal-41736-firebase-adminsdk-cdzmk-d8be63ed0b.json")
+cred = credentials.Certificate("fitreal-41736-firebase-adminsdk-cdzmk-d8be63ed0b.json")
 default_app = firebase_admin.initialize_app(cred, {
 	'databaseURL':"https://fitreal-41736-default-rtdb.asia-southeast1.firebasedatabase.app/"
 	})
