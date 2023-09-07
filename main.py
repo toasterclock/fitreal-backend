@@ -4,7 +4,7 @@ from firebase_admin import credentials, db, storage
 from dotenv import load_dotenv
 load_dotenv()
 import json, os
-
+import copy
 
 
 
@@ -133,6 +133,7 @@ def post_image():
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
+    
     if not checkAPIKey(request):
         return "Denied, Invalid API Key"
     else:
@@ -144,7 +145,6 @@ def create_user():
             local_db = json.load(json_file)
         
         local_db[data["fireAuthID"]] = data
-
         with open('local_db.json', 'w') as outfile:
             json.dump(local_db, outfile)
         # replace firebase db
@@ -193,6 +193,31 @@ def update_feed():
     # return image url + activity data + return using the activityid
 
     return friends_feed
+
+
+@app.route('/next_workout', methods=['POST'])
+def next_workout():
+    local_db = {}
+    with open("local_db.json", "r") as f:
+        local_db = json.load(f)
+
+    # using ISO 8601 format
+    if "userID" not in request.json:
+        return "Please provide the userID."
+    if "nextWorkoutDatetime" not in request.json:
+        return "Please provide the datetime of the next workout."
+   
+    
+    if request.json["userID"] in local_db:
+        return "User not found."
+    
+    local_db[request.json["userID"]]["nextWorkout"] = request.json["nextWorkoutDatetime"]
+    
+    # update rtdb
+    ref.set(local_db)
+
+    return "Success"
+
 
 # @app.route('/add_friend', methods=['POST'])
 # def add_friend():
