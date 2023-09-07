@@ -129,7 +129,7 @@ def post_image():
     
     #ref.set(local_db)
 
-    return "url added"
+    return blob.public_url
 
 @app.route('/create_user', methods=['POST'])
 def create_user():
