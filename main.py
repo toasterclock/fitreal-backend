@@ -86,7 +86,10 @@ def fetch_user():
         local_db = json.load(json_file)
     # return user data
     
-    return jsonify(local_db[data["userID"]])
+    if data["userID"] not in local_db:
+        return "User not found"
+    else:
+        return jsonify(local_db[data["userID"]])
 
 
 
